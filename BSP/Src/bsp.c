@@ -16,6 +16,7 @@ void bsp_config(void) {
   __HAL_RCC_GPIOG_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOI_CLK_ENABLE();
+  __HAL_RCC_TIM3_CLK_ENABLE();
   __HAL_RCC_TIM2_CLK_ENABLE();
 }
 
