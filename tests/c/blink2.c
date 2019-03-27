@@ -12,6 +12,7 @@ int main(void)
   htim3.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Period = 10000-1;
   htim3.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
 
   Temp.Instance = TIM3;
   Temp.Channel = TIM_CHANNEL_1;
@@ -30,5 +31,6 @@ int main(void)
   GPIO_InitStruct2.Alternate = GPIO_AF2_TIM3;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct2);
 
-  HAL_TIM_PWM_Start(&Temp,TIM_CHANNEL_3);
+  //HAL_TIM_Base_Start(&Temp);
+  HAL_TIM_PWM_Start(&Temp,TIM_CHANNEL_1);
 }
