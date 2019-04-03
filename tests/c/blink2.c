@@ -3,34 +3,37 @@
 
 int main(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct2;
-  TIM_HandleTypeDef Temp;
-  TIM_Base_InitTypeDef htim3;
-  TIM_ClockConfigTypeDef sClockSourceConfig;
-
-  htim3.Prescaler = 1600-1;
-  htim3.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Period = 10000-1;
-  htim3.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  GPIO_InitTypeDef GPIO_InitStruct2 = {};
+  TIM_OC_InitTypeDef sConfigOC = {};
+  TIM_HandleTypeDef Temp = {};
 
   Temp.Instance = TIM3;
   Temp.Channel = TIM_CHANNEL_1;
-  Temp.Init = htim3;
-
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  sClockSourceConfig.ClockPrescaler = TIM_CLOCKPRESCALER_DIV1;
-  HAL_TIM_ConfigClockSource(&Temp, &sClockSourceConfig);
+  Temp.Init.Prescaler = 16000;
+  Temp.Init.CounterMode = TIM_COUNTERMODE_UP;
+  Temp.Init.Period = 1300;
+  Temp.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  Temp.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 
   HAL_TIM_PWM_Init(&Temp);
 
   GPIO_InitStruct2.Pin = GPIO_PIN_6;
-  GPIO_InitStruct2.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct2.Mode = GPIO_MODE_AF_OD;
   GPIO_InitStruct2.Pull = GPIO_NOPULL;
-  GPIO_InitStruct2.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  GPIO_InitStruct2.Speed = GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct2.Alternate = GPIO_AF2_TIM3;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct2);
 
-  //HAL_TIM_Base_Start(&Temp);
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.OCIdleState = TIM_OCIDLESTATE_SET;
+  sConfigOC.Pulse = 650;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_ENABLE;
+
+  HAL_TIM_PWM_ConfigChannel(&Temp, &sConfigOC, TIM_CHANNEL_1);
+
   HAL_TIM_PWM_Start(&Temp,TIM_CHANNEL_1);
+
+  while(1) {
+  }
 }
