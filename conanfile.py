@@ -1,8 +1,13 @@
 from conans import ConanFile, CMake
+import os
+
+def get_version():
+    # Version is set by release branch CI to be latest tag on a commit being merged unifies docker and conan versions 2nd arg is the default
+    return os.getenv('VERSION', "1.2.0")
 
 class MtrainConan(ConanFile):
     name = "mTrain"
-    version = "1.2.0"
+    version = get_version()
     url = "https://github.com/RoboJackets/mtrain-firmware"
     description = "mTrain description"
     license = "Apache"
